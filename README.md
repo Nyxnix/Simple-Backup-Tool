@@ -1,6 +1,12 @@
 # Simple Backup Tool
 A simple CLI tool for backing up directories and scheduling backups with cron
- 
+
+## Requirements
+```
+rsync
+cron
+```
+
 ## How to use
 
 Clone the repo
