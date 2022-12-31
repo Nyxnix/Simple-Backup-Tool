@@ -1,6 +1,6 @@
 #!/bin/sh
 PS3="Select an option: "
-select opt in local remote schedule info quit; do
+select opt in local schedule info quit; do
 
     case $opt in
       # Local transfers
@@ -11,23 +11,12 @@ select opt in local remote schedule info quit; do
       echo Backup complete!
       break
       ;;
-      # Remote transfers (Needs work)
-      remote)
-      read -p "Enter the local path you would like to backup: " dir1
-      read -p "Enter the remote path (Ex. username@remote_host:/home/username/dir1): " dir2
-      rsync -avuczP '$dir1' '$dir2'
-      echo Backup complete!
-      break
-      ;;
       # Schedules cron job for rsync
       schedule)
-      echo 
-      echo "READ THIS FIRST. Before you run this script you need to have an existing crontab or it will error."
-      echo "To create a crontab type 'crontab -e' and add a comment '#a' to initialize it"
-      echo "I havent figured out a way around this yet, but I am working on it! :)"
-      echo 
       read -p "Enter the path you would like to backup: " dir1
       read -p "Enter the path you would like to backup to: " dir2
+      # Initialize crontab by adding a comment if not present
+      crontab -l | grep -q '#a' && echo "crontab exists" || (crontab -l; echo "#a") | sort -u | crontab -
       echo "How often would you like to backup?"
       select time in day week month; do
         case $time in
